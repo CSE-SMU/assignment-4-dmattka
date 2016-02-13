@@ -1,9 +1,49 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Todo Application</title>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
-  </head>
-  <body>
-  </body>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+	
+
+	<body ng-app="myApp" ng-controller="todo">
+
+	<h2>Todo List</h2>
+
+	<form ng-submit="append()">
+	    <input type="text" ng-model="todoTitle" size="50" placeholder="New Todo">
+	    <input type="text" ng-model="todoDate" size="20" placeholder="Date">
+	    <br>
+	    <input type="text" ng-model="todoDesc" size="75" placeholder="Description">
+	    <br>
+	    <input type="submit" value="Add To List">
+	</form>
+
+	<br>
+
+	<div ng-repeat="x in todoList">
+	    <input type="checkbox" ng-model="x.done"> <span ng-bind="x.text"></span>
+	</div>
+
+	<p><button ng-click="remove()">Remove Checked Todo's</button></p>
+
+	<script>
+	var app = angular.module('myApp', []); 
+	app.controller('todo', function($scope) {
+	    $scope.todoList = [];
+
+	    $scope.append = function() {
+	        $scope.todoList.push({text:($scope.todoTitle + ' || ' + $scope.todoDate + ' || Description: {' + $scope.todoDesc + '}'), done:false});
+	        $scope.todoInput = "";
+	    };
+
+	    $scope.remove = function() {
+	        var oldList = $scope.todoList;
+	        $scope.todoList = [];
+	        angular.forEach(oldList, function(x) {
+	            if (!x.done) $scope.todoList.push(x);
+	        });
+	    };
+	});
+	</script>
+
+	</body>
 </html>
